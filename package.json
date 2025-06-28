@@ -1,6 +1,6 @@
 {
   "name": "@nyuta/estat-mcp",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "MCP server for e-Stat API integration - Access Japanese government statistical data",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
