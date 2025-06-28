@@ -11,16 +11,30 @@ This is an MCP (Model Context Protocol) server that provides integration with Ja
 ### Running the Server
 ```bash
 # Build the project
-npm run build
+pnpm run build
 
 # Run the server
-npm start
+pnpm start
 
 # Development mode with tsx
-npm run dev
+pnpm run dev
 
 # Or via npx
-npx estat-mcp-server
+npx @nyuta/estat-mcp
+```
+
+### Testing the Server
+```bash
+# Test all functionality
+pnpm test
+
+# Test specific tools
+pnpm run test:search        # Search statistics tables
+pnpm run test:metadata      # Get table metadata
+pnpm run test:data          # Get statistical data
+
+# Manual testing
+node test/test-client.js [test-name]
 ```
 
 ### Environment Setup
@@ -37,17 +51,19 @@ npx estat-mcp-server
    - Async architecture using native fetch API
    - Comprehensive error handling for timeouts and connection issues
 
-2. **Available Tools**:
-   - `search_e_stat_tables`: Search statistics by keyword and year
-   - `get_e_stat_meta_info`: Retrieve table metadata
-   - `get_specific_e_stat_data`: Get actual statistical data
-   - `get_e_stat_ref_dataset`: Reference dataset filtering conditions
-   - `get_e_stat_data_catalog`: Get catalog information
+2. **Available Tools** (based on e-Stat API 3.0):
+   - `search_e_stat_tables`: Statistical Table Information Retrieval - Search government statistics by keyword with logical operators
+   - `get_e_stat_meta_info`: Metadata Retrieval - Get comprehensive table structure and category information
+   - `get_specific_e_stat_data`: Statistical Data Retrieval - Access numerical data with geographic filtering
+   - `get_e_stat_ref_dataset`: Dataset Reference - Explore available filtering conditions and data structure
+   - `get_e_stat_data_catalog`: Data Catalog Information Retrieval - Browse statistical files and databases
 
 ### API Integration
 - Base URL: `https://api.e-stat.go.jp/rest/3.0/app/`
 - Supports complex queries with AND/OR/NOT operators
-- JSON response format with proper error handling
+- Multiple output formats: JSON, XML, CSV
+- Geographic filtering capabilities (prefecture/municipality level)
+- Comprehensive error handling and timeout management
 
 ### Package Structure
 ```

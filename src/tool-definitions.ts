@@ -2,9 +2,9 @@ export const TOOL_DEFINITIONS = [
   {
     name: "search_e_stat_tables",
     description:
-      "Search statistics tables from e-Stat API by keyword and year. " +
-      "Returns a list of matching statistics tables. " +
-      "キーワードと年度で政府統計表を検索します。",
+      "Statistical Table Information Retrieval API - Search and discover statistics tables from Japan's e-Stat API 3.0. " +
+      "Returns comprehensive list of matching government statistical tables with metadata. " +
+      "政府統計表情報取得API - キーワードと条件で政府統計表を検索・発見します。",
     inputSchema: {
       type: "object",
       properties: {
@@ -58,6 +58,18 @@ export const TOOL_DEFINITIONS = [
             "Search type: '1' for summary, '2' for details (default: '1'). " +
             "検索種別：'1'=要約、'2'=詳細（デフォルト：'1'）",
         },
+        collectArea: {
+          type: "string",
+          description:
+            "Geographic collection area code for targeted data collection. " +
+            "データ収集対象地域コード",
+        },
+        lang: {
+          type: "string",
+          description:
+            "Language selection: 'J' for Japanese, 'E' for English (default: 'J'). " +
+            "言語選択：'J'=日本語、'E'=英語（デフォルト：'J'）",
+        },
       },
       required: ["search_word"],
     },
@@ -65,9 +77,9 @@ export const TOOL_DEFINITIONS = [
   {
     name: "get_e_stat_meta_info",
     description:
-      "Get metadata information for a specific statistics table from e-Stat API. " +
-      "Returns detailed metadata including table structure and categories. " +
-      "特定の統計表のメタ情報を取得します。",
+      "Metadata Retrieval API - Get comprehensive metadata information for specific statistics tables from e-Stat API 3.0. " +
+      "Returns detailed table structure, categories, classifications, and data dictionary. " +
+      "メタ情報取得API - 特定の統計表の詳細なメタ情報を取得します。",
     inputSchema: {
       type: "object",
       properties: {
@@ -83,6 +95,12 @@ export const TOOL_DEFINITIONS = [
             "Flag to get explanations: 'Y' to include, 'N' to exclude (default: 'N'). " +
             "説明情報取得フラグ：'Y'=取得、'N'=非取得（デフォルト：'N'）",
         },
+        lang: {
+          type: "string",
+          description:
+            "Language selection: 'J' for Japanese, 'E' for English (default: 'J'). " +
+            "言語選択：'J'=日本語、'E'=英語（デフォルト：'J'）",
+        },
       },
       required: ["stats_data_id"],
     },
@@ -90,9 +108,10 @@ export const TOOL_DEFINITIONS = [
   {
     name: "get_specific_e_stat_data",
     description:
-      "Get specific statistical data (numeric values) from e-Stat API. " +
+      "Statistical Data Retrieval API - Get specific numerical statistical data from e-Stat API 3.0. " +
+      "Supports hierarchical filtering, geographic narrowing, and flexible data extraction. " +
       "Use either data_set_id OR stats_data_id (not both). " +
-      "特定の統計データ（数値）を取得します。",
+      "統計データ取得API - 特定の統計データ（数値）を取得します。",
     inputSchema: {
       type: "object",
       properties: {
@@ -140,6 +159,12 @@ export const TOOL_DEFINITIONS = [
             "Area code to narrow down results (e.g., '13000' for Tokyo). " +
             "地域絞込みコード（例：東京都なら'13000'）",
         },
+        lang: {
+          type: "string",
+          description:
+            "Language selection: 'J' for Japanese, 'E' for English (default: 'J'). " +
+            "言語選択：'J'=日本語、'E'=英語（デフォルト：'J'）",
+        },
       },
       oneOf: [
         { required: ["data_set_id"] },
@@ -150,9 +175,9 @@ export const TOOL_DEFINITIONS = [
   {
     name: "get_e_stat_ref_dataset",
     description:
-      "Reference dataset filtering conditions from e-Stat API. " +
-      "Returns available filtering options for the dataset. " +
-      "データセットのフィルタリング条件を参照します。",
+      "Dataset Reference API - Reference dataset filtering conditions and structure from e-Stat API 3.0. " +
+      "Returns available filtering options, dimensions, hierarchies, and valid parameter combinations. " +
+      "データセット参照API - データセットのフィルタリング条件と構造を参照します。",
     inputSchema: {
       type: "object",
       properties: {
@@ -162,6 +187,12 @@ export const TOOL_DEFINITIONS = [
             "Dataset ID. " +
             "データセットID",
         },
+        lang: {
+          type: "string",
+          description:
+            "Language selection: 'J' for Japanese, 'E' for English (default: 'J'). " +
+            "言語選択：'J'=日本語、'E'=英語（デフォルト：'J'）",
+        },
       },
       required: ["data_set_id"],
     },
@@ -169,9 +200,9 @@ export const TOOL_DEFINITIONS = [
   {
     name: "get_e_stat_data_catalog",
     description:
-      "Get statistics file and database catalog information from e-Stat API. " +
-      "Returns available data files and database information. " +
-      "統計ファイル・データベースのカタログ情報を取得します。",
+      "Data Catalog Information Retrieval API - Get comprehensive statistics file and database catalog from e-Stat API 3.0. " +
+      "Browse and discover available statistical resources, files, and databases with detailed metadata. " +
+      "統計ファイル・データベースカタログ情報取得API - 統計リソースの包括的なカタログ情報を取得します。",
     inputSchema: {
       type: "object",
       properties: {
@@ -218,6 +249,12 @@ export const TOOL_DEFINITIONS = [
           description:
             "Resource ID for specific data resource. " +
             "特定のデータリソースID",
+        },
+        lang: {
+          type: "string",
+          description:
+            "Language selection: 'J' for Japanese, 'E' for English (default: 'J'). " +
+            "言語選択：'J'=日本語、'E'=英語（デフォルト：'J'）",
         },
       },
       required: [],

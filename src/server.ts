@@ -19,7 +19,7 @@ const createServer = () => {
 
   const server = new Server(
     {
-      name: "estat-mcp-server",
+      name: "estat-mcp",
       version: "0.1.0",
     },
     {

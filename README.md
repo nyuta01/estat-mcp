@@ -1,11 +1,11 @@
-# e-Stat MCP Server (TypeScript)
+# e-Stat MCP Server
 
-MCP (Model Context Protocol) server for integrating with Japan's e-Stat API, enabling language models to search and retrieve Japanese government statistical data.
+An MCP (Model Context Protocol) server that provides seamless integration with Japan's e-Stat API, enabling AI language models to search and retrieve Japanese government statistical data. This project has been converted from Python to TypeScript for better performance and maintainability.
 
 ## Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## Setup
@@ -22,88 +22,178 @@ cp .env.example .env
 
 ### Build the project
 ```bash
-npm run build
+pnpm run build
 ```
 
 ### Run the server
 ```bash
-npm start
+pnpm start
 # or during development
-npm run dev
+pnpm run dev
 ```
 
-### Run with MCP
+### Run as MCP Server
 ```bash
 npx @nyuta/estat-mcp
 ```
 
+The server runs on stdio transport for MCP communication and automatically includes authentication parameters for API calls.
+
 ## Available Tools
 
-The server provides 5 comprehensive tools for interacting with the e-Stat API:
+The server provides 5 comprehensive tools for interacting with the e-Stat API 3.0:
 
-### 1. **search_e_stat_tables** - Search Statistics Tables
-- Search by keyword with AND/OR/NOT operators
-- Filter by survey years, data release years
-- Specify statistics field/code for targeted search
-- Support for summary or detailed search results
+### 1. **search_e_stat_tables** - Statistical Table Information Retrieval
+Search and discover statistics tables from Japan's government statistical database.
 
-### 2. **get_e_stat_meta_info** - Get Table Metadata
-- Retrieve detailed metadata for statistics tables
-- Option to include explanation information
-- Table structure and category information
+**Key Features:**
+- Search by keyword with logical operators (AND/OR/NOT)
+- Filter by survey years and data release periods
+- Target specific statistical fields (e.g., population, economy)
+- Control search results with summary or detailed output
+- Pagination support with configurable limits
 
-### 3. **get_specific_e_stat_data** - Get Statistical Data
-- Retrieve actual numeric statistical data
-- Support for dataset ID or statistics table ID
-- Section header control and special character handling
-- Area-specific data filtering (e.g., by prefecture)
+**Parameters:**
+- `search_word` (required): Search keyword with operator support
+- `surveyYears`: Target period (yyyy, yyyymm, or range)
+- `statsField`: Statistical field codes (e.g., '02' for population)
+- `searchKind`: '1' for summary, '2' for detailed results
 
-### 4. **get_e_stat_ref_dataset** - Reference Dataset Conditions
-- Get available filtering conditions for datasets
-- Understand data structure before querying
+### 2. **get_e_stat_meta_info** - Metadata Retrieval
+Retrieve comprehensive metadata for specific statistics tables.
 
-### 5. **get_e_stat_data_catalog** - Get Data Catalog
-- Browse available statistical files and databases
-- Filter by data type (Excel, CSV, PDF)
-- Search by catalog or resource ID
+**Key Features:**
+- Complete table structure information
+- Category and classification details
+- Optional explanation text retrieval
+- Data dictionary and field descriptions
+
+**Parameters:**
+- `stats_data_id` (required): Target statistics table ID
+- `explanationGetFlg`: Include explanations ('Y'/'N')
+
+### 3. **get_specific_e_stat_data** - Statistical Data Retrieval
+Access actual numerical statistical data with flexible filtering options.
+
+**Key Features:**
+- Retrieve data by dataset ID or statistics table ID
+- Geographic filtering (prefecture, municipality level)
+- Configurable section headers and special character handling
+- Pagination for large datasets
+- Multiple output formats (JSON, CSV, XML)
+
+**Parameters:**
+- `data_set_id` OR `stats_data_id` (required): Data identifier
+- `narrowDownArea`: Geographic area codes (e.g., '13000' for Tokyo)
+- `sectionHeaderFlg`: Include/exclude section headers
+- `replaceSpChars`: Handle special characters
+
+### 4. **get_e_stat_ref_dataset** - Dataset Reference
+Explore available filtering conditions and data structure before querying.
+
+**Key Features:**
+- Available filter categories and codes
+- Data dimensions and hierarchies
+- Valid parameter combinations
+- Dataset structure analysis
+
+**Parameters:**
+- `data_set_id` (required): Target dataset identifier
+
+### 5. **get_e_stat_data_catalog** - Data Catalog Information Retrieval
+Browse and search the comprehensive catalog of available statistical resources.
+
+**Key Features:**
+- Search across files, databases, and resources
+- Filter by data format (Excel, CSV, PDF)
+- Browse by catalog and resource IDs
+- Discover available statistical surveys and datasets
+
+**Parameters:**
+- `search_word`: Keyword search with logical operators
+- `dataType`: Filter by format ('XLS', 'CSV', 'PDF')
+- `catalogId`/`resourceId`: Direct catalog access
 
 ## Development
 
 ### Watch mode
 ```bash
-npm run watch
+pnpm run watch
 ```
 
 ### Clean build
 ```bash
-npm run clean
-npm run build
+pnpm run clean
+pnpm run build
+```
+
+### Testing
+
+Test the MCP server functionality with the built-in test client:
+
+```bash
+# Run all tests
+pnpm test
+
+# Run specific tests
+pnpm run test:list-tools    # List available tools
+pnpm run test:search        # Search statistics tables
+pnpm run test:metadata      # Get table metadata
+pnpm run test:data          # Get statistical data
+pnpm run test:ref           # Reference dataset conditions
+pnpm run test:catalog       # Browse data catalog
+```
+
+**Manual Testing:**
+```bash
+# Build first
+pnpm run build
+
+# Run individual tests
+node test/test-client.js list-tools
+node test/test-client.js search-tables
+node test/test-client.js get-metadata
 ```
 
 ## Publishing to npm
 
 ### Interactive publish (recommended)
 ```bash
-npm run publish:interactive
+pnpm run publish:interactive
 ```
 
 ### Manual publish
 ```bash
 # Build and publish
-npm run prepublishOnly
-npm run publish:npm
+pnpm run prepublishOnly
+pnpm run publish:npm
 
 # Or with version bump
-npm version patch  # or minor/major
-npm publish --access public
+pnpm version patch  # or minor/major
+pnpm publish --access public
 ```
 
 ## Architecture
 
-- Built with TypeScript and MCP SDK
-- Uses native fetch API for HTTP requests
-- Implements comprehensive error handling for timeouts and connection issues
+### Core Components
+
+- **MCP Server Implementation**: Built on @modelcontextprotocol/sdk with async architecture
+- **API Integration**: Uses native fetch API with base URL `https://api.e-stat.go.jp/rest/3.0/app/`
+- **Error Handling**: Comprehensive timeout and connection error handling with 30-second default timeout using AbortController
+- **Type Safety**: TypeScript strict mode enabled with ES modules support
+
+### Package Structure
+```
+src/
+├── index.ts     # Entry point
+└── server.ts    # Core server implementation
+```
+
+### Key Features
 - Supports complex queries with AND/OR/NOT operators
+- JSON response format with proper error handling
+- All API calls automatically include authentication parameters
+- Timeout handling implemented for reliable communication
 
 ## Requirements
 

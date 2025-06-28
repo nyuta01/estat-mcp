@@ -14,7 +14,14 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm run clean && npm run build && chmod +x dist/index.js",
     "publish:npm": "npm publish --access public",
-    "publish:interactive": "./scripts/publish.sh"
+    "publish:interactive": "./scripts/publish.sh",
+    "test": "node test/test-client.js all",
+    "test:list-tools": "node test/test-client.js list-tools",
+    "test:search": "node test/test-client.js search-tables",
+    "test:metadata": "node test/test-client.js get-metadata",
+    "test:data": "node test/test-client.js get-data",
+    "test:ref": "node test/test-client.js ref-dataset",
+    "test:catalog": "node test/test-client.js data-catalog"
   },
   "bin": {
     "estat-mcp": "./dist/index.js"
