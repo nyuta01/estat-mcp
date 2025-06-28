@@ -1,0 +1,60 @@
+{
+  "name": "@nyuta/estat-mcp",
+  "version": "0.1.3",
+  "description": "MCP server for e-Stat API integration - Access Japanese government statistical data",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "node --loader tsx ./src/index.ts",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run clean && npm run build && chmod +x dist/index.js",
+    "publish:npm": "npm publish --access public",
+    "publish:interactive": "./scripts/publish.sh"
+  },
+  "bin": {
+    "estat-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    ".env.example"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "estat",
+    "japan",
+    "statistics",
+    "government-data",
+    "api",
+    "typescript"
+  ],
+  "author": "nyuta01",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyuta01/estat-mcp.git"
+  },
+  "homepage": "https://github.com/nyuta01/estat-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/nyuta01/estat-mcp/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
