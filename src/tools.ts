@@ -1,5 +1,56 @@
-import { ToolArguments, EStatRequestParams, ENDPOINTS } from './types.js';
-import { EStatAPIClient } from './api-client.js';
+import type { ToolArguments, EStatRequestParams } from './types.js';
+import { ENDPOINTS } from './types.js';
+import type { EStatAPIClient } from './api-client.js';
+
+/**
+ * Validates and formats surveyYears parameter for e-Stat API
+ * Valid formats: yyyy, yyyymm, yyyymm-yyyymm
+ * @param surveyYears - Input survey years string
+ * @returns Formatted survey years string or undefined if invalid
+ */
+function validateSurveyYears(surveyYears: string): string | undefined {
+  if (!surveyYears) return undefined;
+  
+  // Remove any whitespace
+  const cleaned = surveyYears.trim();
+  
+  // Check if it's a single year (yyyy)
+  if (/^\d{4}$/.test(cleaned)) {
+    return cleaned;
+  }
+  
+  // Check if it's year-month format (yyyymm)
+  if (/^\d{6}$/.test(cleaned)) {
+    const year = Number.parseInt(cleaned.substring(0, 4));
+    const month = Number.parseInt(cleaned.substring(4, 6));
+    if (month >= 1 && month <= 12) {
+      return cleaned;
+    }
+  }
+  
+  // Check if it's a range format (yyyymm-yyyymm)
+  if (/^\d{6}-\d{6}$/.test(cleaned)) {
+    const [start, end] = cleaned.split('-');
+    const startYear = Number.parseInt(start.substring(0, 4));
+    const startMonth = Number.parseInt(start.substring(4, 6));
+    const endYear = Number.parseInt(end.substring(0, 4));
+    const endMonth = Number.parseInt(end.substring(4, 6));
+    
+    if (startMonth >= 1 && startMonth <= 12 && endMonth >= 1 && endMonth <= 12) {
+      return cleaned;
+    }
+  }
+  
+  // Check if it's a year range format (yyyy-yyyy) and convert to yyyymm-yyyymm
+  if (/^\d{4}-\d{4}$/.test(cleaned)) {
+    const [startYear, endYear] = cleaned.split('-');
+    // Convert to January of start year to December of end year
+    return `${startYear}01-${endYear}12`;
+  }
+  
+  // Invalid format
+  return undefined;
+}
 
 export class ToolHandlers {
   constructor(private readonly apiClient: EStatAPIClient) {}
@@ -9,9 +60,20 @@ export class ToolHandlers {
       throw new Error("search_word is required");
     }
 
+    // Validate and format surveyYears if provided
+    let validatedSurveyYears: string | undefined;
+    if (args.surveyYears) {
+      validatedSurveyYears = validateSurveyYears(args.surveyYears);
+      if (!validatedSurveyYears) {
+        throw new Error(
+          `Invalid surveyYears format: ${args.surveyYears}. Valid formats are: yyyy (e.g., '2020'), yyyymm (e.g., '202010'), or yyyymm-yyyymm (e.g., '202001-202012')`
+        );
+      }
+    }
+
     const params: EStatRequestParams = {
       searchWord: args.search_word,
-      ...(args.surveyYears && { surveyYears: args.surveyYears }),
+      ...(validatedSurveyYears && { surveyYears: validatedSurveyYears }),
       ...(args.openYears && { openYears: args.openYears }),
       ...(args.statsField && { statsField: args.statsField }),
       ...(args.statsCode && { statsCode: args.statsCode }),
@@ -79,9 +141,20 @@ export class ToolHandlers {
   }
 
   async getDataCatalog(args: ToolArguments | undefined): Promise<unknown> {
+    // Validate and format surveyYears if provided
+    let validatedSurveyYears: string | undefined;
+    if (args?.surveyYears) {
+      validatedSurveyYears = validateSurveyYears(args.surveyYears);
+      if (!validatedSurveyYears) {
+        throw new Error(
+          `Invalid surveyYears format: ${args.surveyYears}. Valid formats are: yyyy (e.g., '2020'), yyyymm (e.g., '202010'), or yyyymm-yyyymm (e.g., '202001-202012')`
+        );
+      }
+    }
+
     const params: EStatRequestParams = {
       ...(args?.search_word && { searchWord: args.search_word }),
-      ...(args?.surveyYears && { surveyYears: args.surveyYears }),
+      ...(validatedSurveyYears && { surveyYears: validatedSurveyYears }),
       ...(args?.startPosition && { startPosition: args.startPosition }),
       ...(args?.limit && { limit: args.limit }),
       ...(args?.dataType && { dataType: args.dataType }),

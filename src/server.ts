@@ -13,7 +13,7 @@ import { TOOL_DEFINITIONS } from './tool-definitions.js';
 
 dotenv.config();
 
-const createServer = () => {
+export const createServer = () => {
   const apiClient = new EStatAPIClient(process.env.E_STAT_APP_ID);
   const toolHandlers = new ToolHandlers(apiClient);
 

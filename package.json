@@ -1,6 +1,6 @@
 {
   "name": "@nyuta/estat-mcp",
-  "version": "0.1.5",
+  "version": "0.1.10",
   "description": "MCP server for e-Stat API integration - Access Japanese government statistical data",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,14 +14,7 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm run clean && npm run build && chmod +x dist/index.js",
     "publish:npm": "npm publish --access public",
-    "publish:interactive": "./scripts/publish.sh",
-    "test": "node test/test-client.js all",
-    "test:list-tools": "node test/test-client.js list-tools",
-    "test:search": "node test/test-client.js search-tables",
-    "test:metadata": "node test/test-client.js get-metadata",
-    "test:data": "node test/test-client.js get-data",
-    "test:ref": "node test/test-client.js ref-dataset",
-    "test:catalog": "node test/test-client.js data-catalog"
+    "test": "node test/test-client.js all"
   },
   "bin": {
     "estat-mcp": "./dist/index.js"

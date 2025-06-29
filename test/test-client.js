@@ -13,9 +13,9 @@
  * - data-catalog: Get data catalog
  */
 
-import { spawn } from 'child_process';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { spawn } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -160,7 +160,7 @@ async function runTest(testName) {
     });
 
     // Send the test request
-    const requestJson = JSON.stringify(test.request) + '\n';
+    const requestJson = `${JSON.stringify(test.request)}\n`;
     server.stdin.write(requestJson);
     server.stdin.end();
 
@@ -190,9 +190,9 @@ const testName = process.argv[2];
 
 if (!testName) {
   console.log('Available tests:');
-  Object.entries(tests).forEach(([key, test]) => {
+  for (const [key, test] of Object.entries(tests)) {
     console.log(`  ${key}: ${test.name}`);
-  });
+  }
   console.log('\nUsage:');
   console.log('  node test/test-client.js [test-name]');
   console.log('  node test/test-client.js all');

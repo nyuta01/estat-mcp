@@ -4,7 +4,10 @@ export const TOOL_DEFINITIONS = [
     description:
       "Statistical Table Information Retrieval API - Search and discover statistics tables from Japan's e-Stat API 3.0. " +
       "Returns comprehensive list of matching government statistical tables with metadata. " +
-      "政府統計表情報取得API - キーワードと条件で政府統計表を検索・発見します。",
+      "Use this tool to find relevant statistics by keywords like '人口' (population), '失業率' (unemployment rate), 'GDP', etc. " +
+      "Supports logical operators (AND/OR/NOT) and filtering by field, year, and region. " +
+      "政府統計表情報取得API - キーワードと条件で政府統計表を検索・発見します。" +
+      "AI Assistant Usage: Start any statistical analysis by using this tool to find relevant data sources.",
     inputSchema: {
       type: "object",
       properties: {
@@ -79,7 +82,10 @@ export const TOOL_DEFINITIONS = [
     description:
       "Metadata Retrieval API - Get comprehensive metadata information for specific statistics tables from e-Stat API 3.0. " +
       "Returns detailed table structure, categories, classifications, and data dictionary. " +
-      "メタ情報取得API - 特定の統計表の詳細なメタ情報を取得します。",
+      "Essential for understanding data structure before retrieving actual statistical values. " +
+      "Shows available categories, time periods, geographic breakdowns, and variable definitions. " +
+      "メタ情報取得API - 特定の統計表の詳細なメタ情報を取得します。" +
+      "AI Assistant Usage: Use this after finding a table to understand its structure before data retrieval.",
     inputSchema: {
       type: "object",
       properties: {
@@ -109,23 +115,26 @@ export const TOOL_DEFINITIONS = [
     name: "get_specific_e_stat_data",
     description:
       "Statistical Data Retrieval API - Get specific numerical statistical data from e-Stat API 3.0. " +
+      "Retrieves actual statistical values like population numbers, economic indicators, etc. " +
       "Supports hierarchical filtering, geographic narrowing, and flexible data extraction. " +
-      "Use either data_set_id OR stats_data_id (not both). " +
-      "統計データ取得API - 特定の統計データ（数値）を取得します。",
+      "IMPORTANT: Specify either data_set_id OR stats_data_id (exactly one is required, not both). " +
+      "Can filter by region using narrowDownArea. Returns structured data with values, units, and classifications. " +
+      "統計データ取得API - 特定の統計データ（数値）を取得します。" +
+      "AI Assistant Usage: Main tool for getting actual numbers for analysis and visualization.",
     inputSchema: {
       type: "object",
       properties: {
         data_set_id: {
           type: "string",
           description:
-            "Dataset ID (use this OR stats_data_id). " +
-            "データセットID（stats_data_idとは排他的）",
+            "Dataset ID (use this OR stats_data_id, exactly one required). " +
+            "データセットID（stats_data_idとは排他的、どちらか一つが必須）",
         },
         stats_data_id: {
           type: "string",
           description:
-            "Statistics table ID (use this OR data_set_id). " +
-            "統計表ID（data_set_idとは排他的）",
+            "Statistics table ID (use this OR data_set_id, exactly one required). " +
+            "統計表ID（data_set_idとは排他的、どちらか一つが必須）",
         },
         startPosition: {
           type: "number",
@@ -166,10 +175,7 @@ export const TOOL_DEFINITIONS = [
             "言語選択：'J'=日本語、'E'=英語（デフォルト：'J'）",
         },
       },
-      oneOf: [
-        { required: ["data_set_id"] },
-        { required: ["stats_data_id"] },
-      ],
+      required: [],
     },
   },
   {
@@ -177,7 +183,10 @@ export const TOOL_DEFINITIONS = [
     description:
       "Dataset Reference API - Reference dataset filtering conditions and structure from e-Stat API 3.0. " +
       "Returns available filtering options, dimensions, hierarchies, and valid parameter combinations. " +
-      "データセット参照API - データセットのフィルタリング条件と構造を参照します。",
+      "Use this to explore what filtering conditions are available for a specific dataset. " +
+      "Helps understand data dimensions before making filtered data requests. " +
+      "データセット参照API - データセットのフィルタリング条件と構造を参照します。" +
+      "AI Assistant Usage: Use when you need to understand available filter options for complex datasets.",
     inputSchema: {
       type: "object",
       properties: {
@@ -202,7 +211,10 @@ export const TOOL_DEFINITIONS = [
     description:
       "Data Catalog Information Retrieval API - Get comprehensive statistics file and database catalog from e-Stat API 3.0. " +
       "Browse and discover available statistical resources, files, and databases with detailed metadata. " +
-      "統計ファイル・データベースカタログ情報取得API - 統計リソースの包括的なカタログ情報を取得します。",
+      "Find downloadable files (Excel, CSV, PDF) containing statistical data. " +
+      "Useful for discovering raw data files and reports not available through other APIs. " +
+      "統計ファイル・データベースカタログ情報取得API - 統計リソースの包括的なカタログ情報を取得します。" +
+      "AI Assistant Usage: Use to find downloadable statistical files and comprehensive reports.",
     inputSchema: {
       type: "object",
       properties: {
