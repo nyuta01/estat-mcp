@@ -30,9 +30,9 @@ export const TOOL_DEFINITIONS = [
         limit: {
           type: "number",
           description:
-            "Number of items to retrieve (default: 100). " +
-            "取得件数（デフォルト: 100）",
-          default: 100,
+            "Number of items to retrieve (default: 10). " +
+            "取得件数（デフォルト: 10）",
+          default: 10,
         },
         openYears: {
           type: "string",
@@ -137,9 +137,9 @@ export const TOOL_DEFINITIONS = [
         limit: {
           type: "number",
           description:
-            "Number of items to retrieve (default: 100). " +
-            "取得件数（デフォルト: 100）",
-          default: 100,
+            "Number of items to retrieve (default: 10). " +
+            "取得件数（デフォルト: 10）",
+          default: 10,
         },
         sectionHeaderFlg: {
           type: "number",
@@ -228,9 +228,9 @@ export const TOOL_DEFINITIONS = [
         limit: {
           type: "number",
           description:
-            "Number of items to retrieve (default: 100). " +
-            "取得件数（デフォルト: 100）",
-          default: 100,
+            "Number of items to retrieve (default: 10). " +
+            "取得件数（デフォルト: 10）",
+          default: 10,
         },
         dataType: {
           type: "string",

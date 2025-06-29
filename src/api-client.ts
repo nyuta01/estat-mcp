@@ -1,7 +1,7 @@
 import type { EStatError, EndpointName } from './types.js';
 
 const E_STAT_BASE_URL = "https://api.e-stat.go.jp/rest/3.0/app/json/";
-const REQUEST_TIMEOUT = 60000;
+const REQUEST_TIMEOUT = 600000;
 
 export class EStatAPIClient {
   private readonly appId: string;
