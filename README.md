@@ -2,29 +2,23 @@
 
 An MCP (Model Context Protocol) server that provides integration with Japan's e-Stat API, enabling AI tools to access Japanese government statistical data.
 
-## Installation
+## Quick Start
 
 ```bash
-npm install @nyuta/estat-mcp
-```
-
-## Setup
-
-1. Get your e-Stat API key from https://www.e-stat.go.jp/api/
-2. Set environment variable:
-
-```bash
+# Set API key (get from https://www.e-stat.go.jp/api/)
 export E_STAT_APP_ID=your_api_key_here
+
+# Search for population statistics
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search_e_stat_tables","arguments":{"search_word":"人口","limit":3}}}' | npx @nyuta/estat-mcp
+
+# Get table metadata  
+echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_e_stat_meta_info","arguments":{"stats_data_id":"0000150041"}}}' | npx @nyuta/estat-mcp
+
+# Get actual data
+echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"get_specific_e_stat_data","arguments":{"stats_data_id":"0000150041","limit":5}}}' | npx @nyuta/estat-mcp
 ```
 
-## Usage
-
-### As MCP Server
-```bash
-npx @nyuta/estat-mcp
-```
-
-### Development
+## Development
 ```bash
 # Build
 pnpm run build
@@ -80,6 +74,7 @@ Browse data catalog and downloadable files.
 
 ## Testing
 
+### Basic Functionality Test
 ```bash
 # Test all functionality
 pnpm test

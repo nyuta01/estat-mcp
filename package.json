@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "@nyuta/estat-mcp": "^0.1.10",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
